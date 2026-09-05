@@ -28,11 +28,9 @@ This system helps students and administrators handle attendance, menu, complaint
 
 ## 👨‍💻 My Contributions
 
-- Implemented **QR-based attendance system**  
-- Developed **backend logic using Django**  
-- Integrated frontend with backend  
-- Managed database connectivity  
-- Tested and debugged application features  
+-Contributed to project ideation and feature planning.
+-Worked with the team on the Hostel Mess Management System.
+-Currently improving and extending the project independently.
 
 ---
 
