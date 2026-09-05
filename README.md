@@ -28,10 +28,10 @@ This system helps students and administrators handle attendance, menu, complaint
 
 ## 👨‍💻 My Contributions
 
--Contributed to project ideation and feature planning.
--Worked with the team on the Hostel Mess Management System.
--Currently improving and extending the project independently.
-
+- Contributed to the **ideation and feature planning** of the Hostel Mess Management System.
+- Worked with the team in developing and refining the project requirements.
+- Contributed ideas for features such as **QR-based meal attendance, food feedback, complaints, and monthly billing**.
+- Currently working on **understanding, improving, and extending the project independently**.
 ---
 
 ## ⚙️ Installation & Setup
