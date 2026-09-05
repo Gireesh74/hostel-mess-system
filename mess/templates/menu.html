@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Daily Menu</title>
+{% load static %}
+
+<style>
+
+/* ===== BODY ===== */
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+display:flex;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover no-repeat fixed;
+}
+
+/* overlay */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.45);
+z-index:-1;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+width:230px;
+height:100vh;
+padding:25px;
+background:rgba(15,23,42,0.95);
+color:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.4);
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:10px 0;
+text-decoration:none;
+color:#cbd5f5;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#2563EB;
+padding-left:18px;
+color:white;
+}
+
+/* ===== MAIN ===== */
+
+.main{
+flex:1;
+padding:40px;
+}
+
+.title{
+text-align:center;
+color:white;
+font-size:34px;
+margin-bottom:30px;
+}
+
+/* ===== CARDS ===== */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:rgba(255,255,255,0.9);
+border-radius:15px;
+padding:15px;
+cursor:pointer;
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
+transition:0.4s;
+text-align:center;
+position:relative;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+}
+
+/* today highlight */
+
+.today{
+border:3px solid gold;
+box-shadow:0 0 20px gold;
+}
+
+/* badge */
+
+.badge{
+position:absolute;
+top:10px;
+right:10px;
+background:gold;
+padding:5px 10px;
+font-size:12px;
+border-radius:6px;
+font-weight:bold;
+}
+
+/* image */
+
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card h3{
+margin:10px 0;
+color:#2563EB;
+}
+
+.card p{
+font-size:14px;
+color:#444;
+margin:3px 0;
+}
+
+.btn{
+margin-top:8px;
+padding:7px 14px;
+border:none;
+background:#2563EB;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#1E40AF;
+}
+
+/* ===== MODAL ===== */
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+}
+
+.modal-box{
+background:white;
+max-width:500px;
+margin:80px auto;
+border-radius:12px;
+padding:25px;
+position:relative;
+text-align:center;
+}
+
+.close{
+position:absolute;
+right:15px;
+top:10px;
+font-size:22px;
+cursor:pointer;
+}
+
+.modal img{
+width:220px;
+height:160px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+.menu-item{
+background:#F1F5F9;
+padding:10px;
+border-radius:8px;
+margin:6px 0;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>Mess System</h2>
+<a href="{% url 'home' %}">🏠 Home</a>
+<a href="{% url 'menu' %}">🍛 Daily Menu</a>
+<a href="{% url 'attendance' %}">📋 Meal Attendance</a>
+<a href="{% url 'complaint' %}">⚠ Complaints</a>
+<a href="{% url 'rating' %}">⭐ Food Rating</a>
+<a href="{% url 'bill' %}">💰 Monthly Bill</a>
+
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<h1 class="title">Weekly Food Menu</h1>
+
+<div class="cards" id="cards"></div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-box">
+
+<span class="close" onclick="closeModal()">✖</span>
+
+<img id="mImg">
+
+<h2 id="mTitle"></h2>
+
+<div class="menu-item"><b>Breakfast:</b> <span id="mB"></span></div>
+<div class="menu-item"><b>Lunch:</b> <span id="mL"></span></div>
+<div class="menu-item"><b>Dinner:</b> <span id="mD"></span></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* MENU DATA */
+
+const menu=[
+
+{day:"Monday",img:"https://fitbottomgirl.wordpress.com/wp-content/uploads/2012/12/menu-monday.jpg?w=584",breakfast:"Idli & Sambar",lunch:"Rice & Dal",dinner:"Chapati & Curry"},
+
+{day:"Tuesday",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvxMO0mEgj3gmEhLEstDB8P8uZJ0iD35-YLQ&s",breakfast:"Dosa",lunch:"Veg Biryani",dinner:"Roti & Paneer"},
+
+{day:"Wednesday",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ2c_vcjg5saDqM73itp4_RdhXWRbbHH7FnA&s",breakfast:"Pongal",lunch:"Rice & Sambar",dinner:"Chapati & Veg Curry"},
+
+{day:"Thursday",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpbdncBNintNDF9SKWWegB0Io1X9-LxguMmA&s",breakfast:"Upma",lunch:"Lemon Rice",dinner:"Roti & Dal"},
+
+{day:"Friday",img:"https://media.istockphoto.com/id/1304672373/vector/sketch-of-little-people-with-word-friday.jpg?s=612x612&w=0&k=20&c=xxcgrpYmhlB16wMFwKqZOCc61WBSR_LkaIFbCrZM7ss=",breakfast:"Poori",lunch:"Veg Pulao",dinner:"Chapati & Paneer"},
+
+{day:"Saturday",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlZW8t85pjeXQP8DbtjE32eJ2vMlGVv8uUVQ&s",breakfast:"Masala Dosa",lunch:"Chicken/Veg Biryani",dinner:"Chapati & Kurma"},
+
+{day:"Sunday",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8QLOMA_81dFVmUxrunXzo4I7WbFTXpIZaAg&s",breakfast:"Poori & Aloo Curry",lunch:"Special Meals",dinner:"Fried Rice / Noodles"}
+
+]
+
+/* detect today */
+
+const todayIndex=new Date().getDay()-1
+
+/* LOAD CARDS */
+
+function load(){
+
+cards.innerHTML=""
+
+menu.forEach((m,i)=>{
+
+cards.innerHTML+=`
+
+<div class="card ${i==todayIndex?'today':''}">
+
+${i==todayIndex?'<div class="badge">Today</div>':''}
+
+<img src="${m.img}">
+
+<h3>${m.day}</h3>
+
+
+<button class="btn" onclick="openModal(${i})">View Full Menu</button>
+
+</div>
+
+`
+
+})
+
+}
+
+/* OPEN MODAL */
+
+function openModal(i){
+
+let m=menu[i]
+
+mImg.src=m.img
+mTitle.innerText=m.day
+mB.innerText=m.breakfast
+mL.innerText=m.lunch
+mD.innerText=m.dinner
+
+modal.style.display="block"
+
+}
+
+function closeModal(){
+modal.style.display="none"
+}
+
+load()
+
+</script>
+
+</body>
+</html>

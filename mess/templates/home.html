@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Home</title>
+{% load static %}
+
+<style>
+
+/* ===== BODY ===== */
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+display:flex;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") no-repeat center center/cover;
+height:100vh;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+width:230px;
+background:rgba(15,23,42,0.95);
+height:100vh;
+padding:25px;
+color:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.3);
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:10px 0;
+text-decoration:none;
+color:#cbd5f5;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#2563EB;
+padding-left:18px;
+color:white;
+}
+
+/* ===== MAIN CONTENT ===== */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+background:rgba(0,0,0,0.55);
+}
+
+/* ===== INTRO ===== */
+
+.main h1{
+font-size:48px;
+margin-bottom:15px;
+}
+
+.main p{
+max-width:650px;
+font-size:18px;
+line-height:1.6;
+}
+
+/* ===== BUTTON ===== */
+
+.btn{
+margin-top:25px;
+padding:12px 22px;
+font-size:16px;
+border:none;
+background:#2563EB;
+color:white;
+border-radius:8px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+background:#1E40AF;
+transform:scale(1.05);
+}
+
+/* ===== QUOTES ===== */
+
+.quotes{
+margin-top:50px;
+max-width:700px;
+}
+
+.quote{
+font-style:italic;
+margin:12px 0;
+font-size:18px;
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+position:absolute;
+bottom:10px;
+font-size:14px;
+opacity:0.8;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>Mess System</h2>
+<a href="{% url 'home' %}">🏠 Home</a>
+<a href="{% url 'menu' %}">🍛 Daily Menu</a>
+<a href="{% url 'attendance' %}">📋 Meal Attendance</a>
+<a href="{% url 'complaint' %}">⚠ Complaints</a>
+<a href="{% url 'rating' %}">⭐ Food Rating</a>
+<a href="{% url 'bill' %}">💰 Monthly Bill</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<h1>Welcome to Hostel Mess Management</h1>
+
+<p>
+A smart platform designed to improve the hostel dining experience.
+Students can check menus, give feedback, track meals, and ensure
+better food services in the hostel mess.
+</p>
+
+<a href="{% url 'menu' %}" class="btn">
+View Weekly Menu
+</a>
+
+<!-- QUOTES -->
+
+<div class="quotes">
+
+<div class="quote">“Good food is the foundation of genuine happiness.”</div>
+
+<div class="quote">“Food tastes better when shared with hostel friends.”</div>
+
+<div class="quote">“Healthy food creates happy students.”</div>
+
+</div>
+
+<div class="footer">
+© 2026 Hostel Mess Management System
+</div>
+
+</div>
+
+</body>
+</html>

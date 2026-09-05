@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Monthly Bill</title>
+
+<style>
+body{
+margin:0;
+display:flex;
+font-family:'Segoe UI',sans-serif;
+background:#f1f5f9;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:240px;
+height:100vh;
+background:#0F172A;
+padding:25px;
+color:white;
+position:fixed;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:8px 0;
+text-decoration:none;
+color:#CBD5F5;
+border-radius:8px;
+}
+
+.sidebar a:hover{
+background:#2563EB;
+color:white;
+}
+
+/* MAIN */
+.main{
+margin-left:260px;
+padding:40px;
+width:100%;
+}
+
+/* HEADER */
+.header{
+font-size:28px;
+font-weight:600;
+color:#1e3c72;
+margin-bottom:10px;
+}
+
+.sub{
+color:gray;
+margin-bottom:20px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* CARD */
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2563EB;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #eee;
+}
+
+/* TOTAL */
+.total-box{
+margin-top:30px;
+padding:20px;
+background:#2563EB;
+color:white;
+font-size:22px;
+text-align:center;
+border-radius:10px;
+}
+
+/* BUTTON */
+.download-btn{
+margin-top:20px;
+padding:12px 20px;
+background:#16A34A;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.download-btn:hover{
+background:#15803D;
+}
+</style>
+
+<script>
+function downloadBill() {
+    window.print();
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>Mess System</h2>
+<a href="{% url 'home' %}">🏠 Home</a>
+<a href="{% url 'menu' %}">🍛 Daily Menu</a>
+<a href="{% url 'attendance' %}">📋 Meal Attendance</a>
+<a href="{% url 'complaint' %}">⚠ Complaints</a>
+<a href="{% url 'rating' %}">⭐ Food Rating</a>
+<a href="{% url 'bill' %}">💰 Monthly Bill</a>
+</div>
+
+<div class="main">
+
+<div class="header">💰 Monthly Bill Dashboard</div>
+<div class="sub">{{ month }}</div>
+
+<div class="grid">
+
+<!-- MEAL SUMMARY -->
+<div class="card">
+<h3>Meal Summary</h3>
+<table>
+<tr>
+<th>Meal</th>
+<th>Count</th>
+<th>Price</th>
+<th>Total</th>
+</tr>
+
+<tr>
+<td>Breakfast</td>
+<td>{{ counts.breakfast }}</td>
+<td>₹{{ prices.breakfast }}</td>
+<td>₹{{ totals.breakfast }}</td>
+</tr>
+
+<tr>
+<td>Lunch</td>
+<td>{{ counts.lunch }}</td>
+<td>₹{{ prices.lunch }}</td>
+<td>₹{{ totals.lunch }}</td>
+</tr>
+
+<tr>
+<td>Dinner</td>
+<td>{{ counts.dinner }}</td>
+<td>₹{{ prices.dinner }}</td>
+<td>₹{{ totals.dinner }}</td>
+</tr>
+
+</table>
+</div>
+
+<!-- COST -->
+<div class="card">
+<h3>Cost Breakdown</h3>
+<table>
+<tr><th>Type</th><th>Amount</th></tr>
+<tr><td>Food Cost</td><td>₹{{ food_cost }}</td></tr>
+<tr><td>Preparation</td><td>₹{{ prep_cost }}</td></tr>
+<tr><td>Maintenance</td><td>₹{{ maintenance }}</td></tr>
+</table>
+</div>
+
+</div>
+
+<!-- TOTAL -->
+<div class="total-box">
+Total Payable: ₹{{ total }}
+</div>
+
+<button class="download-btn" onclick="downloadBill()">
+⬇ Download Bill
+</button>
+
+</div>
+
+</body>
+</html>

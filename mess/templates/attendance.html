@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>QR Attendance</title>
+
+<style>
+body{
+margin:0;
+display:flex;
+font-family:'Segoe UI';
+background:#0f172a;
+color:white;
+}
+
+.sidebar{
+width:230px;
+background:#1e293b;
+padding:25px;
+height:100vh;
+}
+
+.sidebar a{
+display:block;
+color:#cbd5f5;
+padding:10px;
+margin:10px 0;
+text-decoration:none;
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+text-align:center;
+}
+
+video{
+width:300px;
+border-radius:10px;
+}
+</style>
+
+<!-- QR LIBRARY -->
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>Mess System</h2>
+<a href="{% url 'home' %}">Home</a>
+<a href="{% url 'attendance' %}">Attendance</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+
+<h2>Scan QR for Attendance</h2>
+
+<div id="reader"></div>
+
+<p id="msg"></p>
+
+</div>
+
+</div>
+
+<script>
+
+function onScanSuccess(decodedText) {
+
+fetch("{% url 'mark_attendance' %}", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"X-CSRFToken": "{{ csrf_token }}"
+},
+body: JSON.stringify({
+meal: decodedText
+})
+})
+.then(res => res.json())
+.then(data => {
+document.getElementById("msg").innerText = "✅ Attendance Marked for " + decodedText
+})
+
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+"reader",
+{ fps: 10, qrbox: 250 }
+);
+
+html5QrcodeScanner.render(onScanSuccess);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Food Rating</title>
+{% load static %}
+
+<style>
+body{
+margin:0;
+display:flex;
+font-family:'Segoe UI',sans-serif;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover no-repeat;
+}
+
+.sidebar{
+width:230px;
+background:#1e293b;
+height:100vh;
+padding:25px;
+color:white;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:10px 0;
+color:#cbd5f5;
+text-decoration:none;
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:15px;
+width:400px;
+text-align:center;
+}
+
+.star{
+font-size:40px;
+cursor:pointer;
+color:#ccc;
+transition:0.2s;
+}
+
+.active{
+color:gold;
+}
+
+#ratingText{
+margin-top:10px;
+font-weight:bold;
+color:#444;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>Mess System</h2>
+<a href="{% url 'home' %}">🏠 Home</a>
+<a href="{% url 'menu' %}">🍛 Daily Menu</a>
+<a href="{% url 'attendance' %}">📋 Meal Attendance</a>
+<a href="{% url 'complaint' %}">⚠ Complaints</a>
+<a href="{% url 'rating' %}">⭐ Food Rating</a>
+<a href="{% url 'bill' %}">💰 Monthly Bill</a>
+</div>
+
+<div class="main">
+<div class="card">
+
+<h2>⭐ Rate Today's Food</h2>
+
+<form method="POST" onsubmit="return validateForm()">
+{% csrf_token %}
+
+<!-- ⭐ STARS -->
+<div id="starContainer">
+    <span class="star" data-value="1">★</span>
+    <span class="star" data-value="2">★</span>
+    <span class="star" data-value="3">★</span>
+    <span class="star" data-value="4">★</span>
+    <span class="star" data-value="5">★</span>
+</div>
+
+<!-- Rating text -->
+<div id="ratingText">Select rating</div>
+
+<!-- Hidden input -->
+<input type="hidden" name="stars" id="starsInput">
+
+<br>
+
+<textarea name="comment" rows="3" placeholder="Write your feedback..." style="width:100%; margin-top:10px;"></textarea>
+
+<br><br>
+
+<button type="submit">Submit Rating</button>
+
+</form>
+
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let selectedStars = 0;
+
+    const stars = document.querySelectorAll(".star");
+    const input = document.getElementById("starsInput");
+    const ratingText = document.getElementById("ratingText");
+
+    const messages = {
+        1: "😡 Very Bad",
+        2: "😕 Bad",
+        3: "😐 Okay",
+        4: "😊 Good",
+        5: "🤩 Excellent"
+    };
+
+    stars.forEach((star) => {
+
+        // CLICK EVENT
+        star.addEventListener("click", function () {
+            selectedStars = parseInt(this.dataset.value);
+            input.value = selectedStars;
+
+            updateStars(selectedStars);
+            ratingText.innerText = messages[selectedStars];
+        });
+
+        // HOVER EFFECT
+        star.addEventListener("mouseenter", function () {
+            updateStars(parseInt(this.dataset.value));
+        });
+
+        star.addEventListener("mouseleave", function () {
+            updateStars(selectedStars);
+        });
+
+    });
+
+    function updateStars(count) {
+        stars.forEach((s, index) => {
+            if (index < count) {
+                s.classList.add("active");
+            } else {
+                s.classList.remove("active");
+            }
+        });
+    }
+
+});
+
+// FORM VALIDATION
+function validateForm() {
+    const value = document.getElementById("starsInput").value;
+
+    if (!value || value == "0") {
+        alert("Please select a rating ⭐");
+        return false;
+    }
+    return true;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Dashboard</title>
+{% load static %}
+
+<style>
+
+/* BODY */
+body{
+margin:0;
+display:flex;
+font-family:'Segoe UI',sans-serif;
+background:url("https://images.unsplash.com/photo-1498837167922-ddd27525d352") no-repeat center/cover;
+height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:230px;
+background:rgba(15,23,42,0.95);
+height:100vh;
+padding:25px;
+color:white;
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+text-decoration:none;
+color:#CBD5F5;
+border-radius:8px;
+margin:8px 0;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#2563EB;
+padding-left:18px;
+}
+
+/* MAIN */
+.main{
+flex:1;
+padding:40px;
+background:rgba(0,0,0,0.45);
+color:white;
+}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.time{
+text-align:right;
+}
+
+/* STATS */
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.stat{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:12px;
+text-align:center;
+}
+
+.stat h2{
+margin:0;
+font-size:32px;
+}
+
+/* CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
+text-align:center;
+}
+
+.card:hover{
+transform:translateY(-8px) scale(1.03);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>Mess System</h2>
+
+<a href="{% url 'home' %}">🏠 Home</a>
+<a href="{% url 'menu' %}">🍛 Daily Menu</a>
+<a href="{% url 'attendance' %}">📋 Meal Attendance</a>
+<a href="{% url 'complaint' %}">⚠ Complaints</a>
+<a href="{% url 'rating' %}">⭐ Food Rating</a>
+<a href="{% url 'bill' %}">💰 Monthly Bill</a>
+
+
+</div>
+<div class="main">
+
+<div class="header">
+<h1>Welcome back 👋</h1>
+
+<div class="time">
+<div id="date"></div>
+<div id="clock"></div>
+</div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+<div class="stat"><h2>120</h2><p>Total Students</p></div>
+<div class="stat"><h2>85</h2><p>Today's Meals</p></div>
+<div class="stat"><h2>12</h2><p>Complaints</p></div>
+<div class="stat"><h2>4.5 ⭐</h2><p>Food Rating</p></div>
+</div>
+
+<div class="cards">
+
+<a href="{% url 'menu' %}" class="card">
+<h3>Today's Menu</h3>
+</a>
+
+<a href="{% url 'attendance' %}" class="card">
+<h3>Mark Attendance</h3>
+</a>
+
+<a href="{% url 'bill' %}" class="card">
+<h3>Monthly Bill</h3>
+</a>
+
+<a href="{% url 'complaint' %}" class="card">
+<h3>Complaints</h3>
+</a>
+
+<a href="{% url 'rating' %}" class="card">
+<h3>Food Rating</h3>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+/* DATE */
+let d=new Date()
+document.getElementById("date").innerText=d.toDateString()
+
+/* CLOCK */
+setInterval(()=>{
+let t=new Date()
+document.getElementById("clock").innerText=t.toLocaleTimeString()
+},1000)
+
+</script>
+
+</body>
+</html>
